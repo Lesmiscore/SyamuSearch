@@ -25,6 +25,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile 'joda-time:joda-time:2.9.9'
     compile project(":indexer")
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
@@ -42,7 +43,7 @@ task("allJars")
     "indexer":"com.nao20010128nao.SyamuSearch.IndexerKt",
     "combiner":"com.nao20010128nao.SyamuSearch.CombinerKt",
     "fastIndexer":"com.nao20010128nao.SyamuSearch.FastIndexerKt",
-    "finder":"com.nao20010128nao.SyamuSearch.Finder"
+    "finder":"com.nao20010128nao.SyamuSearch.FinderKt"
 ].forEach{k,v->
     task ("${k}Jar",type: Jar) {
         baseName = "$k"

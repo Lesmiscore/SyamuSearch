@@ -42,17 +42,17 @@ fun rand(size: Int = 16): String = ByteArray(size).run {
 }
 
 fun processImage(file: File, width: Int = 9, height: Int = 8): Long {
-    val bmp = run {
-        val resized = BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR)
-        val img = ImageIO.read(file)
+    val bmp = ImageIO.read(file)
+    val argb = run {
+        val resized = BufferedImage(bmp.width, bmp.height, BufferedImage.TYPE_4BYTE_ABGR)
         resized.createGraphics().also {
-            it.drawImage(img, 0, 0, width, height, null)
+            it.drawImage(bmp, 0, 0, bmp.width, bmp.height, null)
             it.dispose()
         }
         resized
     }
     val bmp32Data = run {
-        val binary = (bmp.raster.dataBuffer as DataBufferByte).data
+        val binary = (argb.raster.dataBuffer as DataBufferByte).data
         val result = ByteArray(binary.size)
         (0 until (width * height)).forEach {
             val a = binary[it * 4 + 0]
