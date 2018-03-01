@@ -3,9 +3,11 @@ buildscript {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
     }
 }
 
@@ -33,3 +35,24 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+task("allJars")
+
+[
+    "indexer":"com.nao20010128nao.SyamuSearch.IndexerKt",
+    "combiner":"com.nao20010128nao.SyamuSearch.CombinerKt",
+    "fastIndexer":"com.nao20010128nao.SyamuSearch.FastIndexerKt",
+    "finder":"com.nao20010128nao.SyamuSearch.Finder"
+].forEach{k,v->
+    task ("${k}Jar",type: Jar) {
+        baseName = "$k"
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        with jar
+        manifest {
+            attributes 'Implementation-Title': k, 'Implementation-Version': version
+            attributes 'Main-Class': v
+        }
+    }
+    allJars.dependsOn "${k}Jar"
+}
+
