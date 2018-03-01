@@ -52,19 +52,7 @@ fun processImage(file: File, width: Int = 9, height: Int = 8): Long {
         resized
     }
     val bmp32Data = run {
-        val binary = (argb.raster.dataBuffer as DataBufferByte).data
-        val result = ByteArray(binary.size)
-        (0 until (width * height)).forEach {
-            val a = binary[it * 4 + 0]
-            val b = binary[it * 4 + 1]
-            val g = binary[it * 4 + 2]
-            val r = binary[it * 4 + 3]
-            result[it * 4 + 0] = b
-            result[it * 4 + 1] = g
-            result[it * 4 + 2] = r
-            result[it * 4 + 3] = a
-        }
-        result
+        (argb.raster.dataBuffer as DataBufferByte).data
     }
     val data = run {
         val result = ByteArray(width * height * 4)
@@ -85,10 +73,10 @@ fun processImage(file: File, width: Int = 9, height: Int = 8): Long {
                         val dx = xx * bmp.width / width / s
                         val dy = yy * bmp.height / height / s
                         val p = (srcX0 + dx + (srcY0 + dy) * bmp.width) * 4
-                        b += bmp32Data[p]
-                        g += bmp32Data[p + 1]
-                        r += bmp32Data[p + 2]
-                        a += bmp32Data[p + 3]
+                        a += bmp32Data[p]
+                        b += bmp32Data[p + 1]
+                        g += bmp32Data[p + 2]
+                        r += bmp32Data[p + 3]
                     }
                 }
 
