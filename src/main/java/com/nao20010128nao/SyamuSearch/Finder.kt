@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
         it.frames.forEachIndexed { number, frame ->
             val distance = java.lang.Long.bitCount(imageId xor frame)
             if (distance < 4) {
-                println("類似地点: ${count++}")
+                println("類似地点: No. ${count++}")
                 println("ハミング距離: $distance")
                 println("動画名: ${it.name}")
                 println("内部フレーム: $number")
