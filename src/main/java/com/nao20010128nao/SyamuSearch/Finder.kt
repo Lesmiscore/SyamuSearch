@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
                         .appendHours().appendSuffix("時間", "時間")
                         .appendMinutes().appendSuffix("分", "分")
                         .appendSeconds().appendSuffix("秒", "秒")
-                        .printZeroNever()
+                        .appendMillis3Digit().printZeroNever()
                         .toFormatter()
 
                 val elapsed = formatter.print(period)
