@@ -43,7 +43,9 @@ task("allJars")
     "indexer":"com.nao20010128nao.SyamuSearch.IndexerKt",
     "combiner":"com.nao20010128nao.SyamuSearch.CombinerKt",
     "fastIndexer":"com.nao20010128nao.SyamuSearch.FastIndexerKt",
-    "finder":"com.nao20010128nao.SyamuSearch.FinderKt"
+    "finder":"com.nao20010128nao.SyamuSearch.FinderKt",
+    "imageInspector":"com.nao20010128nao.SyamuSearch.ImageInspectorKt",
+    "dbInspector":"com.nao20010128nao.SyamuSearch.DbInspectorKt"
 ].forEach{k,v->
     task ("${k}Jar",type: Jar) {
         baseName = "$k"
