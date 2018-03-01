@@ -11,18 +11,21 @@ import javax.imageio.ImageIO
 
 
 fun main(args: Array<String>) {
-    val (filename, name, dest) = args
+    val (filename, dest) = args
+    val name = File(filename).name
     val tmp = File(rand() + ".tmp")
     println("Processing the video...")
     proc("mkdir", "-p", tmp.absolutePath).waitFor()
     Runtime.getRuntime().addShutdownHook(Thread {
         proc("rm", "-rf", tmp.absolutePath).waitFor()
     })
-    proc("ffmpeg", "-i", filename, "-r", "2", "${tmp.absolutePath}/image_%05d.png").waitFor()
+    proc("ffmpeg", "-i", filename, "-r", "4", "${tmp.absolutePath}/image_%05d.png").waitFor()
     println("Collecting images...")
     val files = tmp.listFiles().also { it.sortBy { it.absolutePath } }
     println("Found: ${files.size}")
+    // we don't use DB class to reduce memory
     DataOutputStream(BufferedOutputStream(FileOutputStream(dest))).use { dos ->
+        dos.writeInt(1) // db length
         dos.writeUTF(name)
         dos.writeInt(files.size)
         files.forEach {
@@ -65,7 +68,7 @@ fun processImage(file: File, width: Int = 9, height: Int = 8): Long {
     }
     val data = run {
         val result = ByteArray(width * height * 4)
-        val s = 12 // s*s = サンプリング数
+        val s = 12
         var pos = 0
         for (y in 0 until height) {
             for (x in 0 until width) {
@@ -115,11 +118,3 @@ fun processImage(file: File, width: Int = 9, height: Int = 8): Long {
         result
     }
 }
-
-// needed for copy & paste from C# code
-typealias ulong = Long
-
-typealias long = Long
-typealias int = Int
-typealias uint = Int
-typealias byte = Byte
